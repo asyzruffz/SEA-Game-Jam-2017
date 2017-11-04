@@ -448,11 +448,12 @@ MonoBehaviour:
   generateDelay: 1
   initFirstTile: 0
   offsetDistance: 1.5
+  corridorLength: 5
   prefabNormalTile: {fileID: 1073018263278886, guid: 00aad03abb6881b49bad36cf28da47b1,
     type: 2}
   prefabSpecialTile: {fileID: 1073018263278886, guid: 541b87c08716a664c8e540591d437cbd,
     type: 2}
-  patterns:
+  hallPatterns:
   - {fileID: 11400000, guid: 15e85ce8bd4e6b44eb5e5501933ac61c, type: 2}
   - {fileID: 11400000, guid: 97800fe7182934c4d9e36929ec52d730, type: 2}
   - {fileID: 11400000, guid: 2f6814eaedd1ef94f9b7ba154c67b0b1, type: 2}
@@ -460,6 +461,11 @@ MonoBehaviour:
   - {fileID: 11400000, guid: d521e9b57f9f19848b7eee416bd0ef9f, type: 2}
   - {fileID: 11400000, guid: 3fd2380d2b4de314db9070c96a9191c2, type: 2}
   - {fileID: 11400000, guid: e6351ec04f93d2d40a612f70cf5971e2, type: 2}
+  - {fileID: 11400000, guid: 47a1b43749ea75b4fa5b556ef6795bd6, type: 2}
+  - {fileID: 11400000, guid: d349b7a79f22e2c45add3cb498d70142, type: 2}
+  - {fileID: 11400000, guid: a6f1f3dae9cc05449886ab85bd798ba8, type: 2}
+  - {fileID: 11400000, guid: 058fcbf3d7d65914491c8fd817ca271a, type: 2}
+  - {fileID: 11400000, guid: 8c721e9474187b14791585bf8f491cc4, type: 2}
 --- !u!1 &1869417065
 GameObject:
   m_ObjectHideFlags: 0
