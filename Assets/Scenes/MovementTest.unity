@@ -312,7 +312,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 4602972388023478, guid: 41f436fc1ff80444691f3a4568d91bb6, type: 2}
       propertyPath: m_LocalPosition.y
-      value: 0.1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4602972388023478, guid: 41f436fc1ff80444691f3a4568d91bb6, type: 2}
       propertyPath: m_LocalPosition.z
@@ -337,10 +337,6 @@ Prefab:
     - target: {fileID: 4602972388023478, guid: 41f436fc1ff80444691f3a4568d91bb6, type: 2}
       propertyPath: m_RootOrder
       value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1552105432367478, guid: 41f436fc1ff80444691f3a4568d91bb6, type: 2}
-      propertyPath: m_Name
-      value: Player
       objectReference: {fileID: 0}
     - target: {fileID: 114292806379872518, guid: 41f436fc1ff80444691f3a4568d91bb6,
         type: 2}
@@ -465,6 +461,10 @@ MonoBehaviour:
   - {fileID: 1073018263278886, guid: 541b87c08716a664c8e540591d437cbd, type: 2}
   - {fileID: 1073018263278886, guid: 9ae0c524461275448985544582af238f, type: 2}
   hallPatterns:
-  - {fileID: 11400000, guid: 811a017fe8fe0a14995e55f3049bbbb1, type: 2}
-  - {fileID: 11400000, guid: a19144aa30c60d24ca9509b830e54a02, type: 2}
-  - {fileID: 11400000, guid: bba9ab80b151e4e439770c22985ac45f, type: 2}
+  - {fileID: 11400000, guid: 97800fe7182934c4d9e36929ec52d730, type: 2}
+  - {fileID: 11400000, guid: 2f6814eaedd1ef94f9b7ba154c67b0b1, type: 2}
+  - {fileID: 11400000, guid: 1cd99df3d24d587478c6cc3951a09265, type: 2}
+  - {fileID: 11400000, guid: d521e9b57f9f19848b7eee416bd0ef9f, type: 2}
+  - {fileID: 11400000, guid: 3fd2380d2b4de314db9070c96a9191c2, type: 2}
+  - {fileID: 11400000, guid: e6351ec04f93d2d40a612f70cf5971e2, type: 2}
+  - {fileID: 11400000, guid: 15e85ce8bd4e6b44eb5e5501933ac61c, type: 2}

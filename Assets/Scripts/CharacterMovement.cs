@@ -18,6 +18,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	TouchGesture touch;
 	Animator playerAnim;
+	FloorTile prevTile;
 
 	void Start () {
 		
@@ -107,7 +108,7 @@ public class CharacterMovement : MonoBehaviour {
 	void MoveTowards (TileDirection direction) {
 
 		if (currentTile == null) {
-			Debug.Log ("No information on current tile the character is standing on!");
+			Debug.Log ("No information on current tile that the character is standing on!");
 			return;
 		}
 
@@ -138,11 +139,19 @@ public class CharacterMovement : MonoBehaviour {
 	}
 	
 	public void ShiftTo (FloorTile tile) {
-		// TODO animation
 		prevPos = transform.position;
+		prevTile = currentTile;
 		Target = new Vector3(tile.GetTilePosition ().x, transform.position.y, tile.GetTilePosition ().z);
-		tile.OnLandingBy (transform);
 		currentTile = tile;
+
+		tile.OnLandingBy (transform);
+	}
+
+	public void ReverseShift () {
+		if (prevTile != null) {
+			Target = new Vector3 (prevTile.GetTilePosition ().x, transform.position.y, prevTile.GetTilePosition ().z);
+			currentTile = prevTile;
+		}
 	}
 
 	public void JumpEvent()

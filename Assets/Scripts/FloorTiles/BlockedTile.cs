@@ -26,14 +26,15 @@ public class BlockedTile : FloorTile
 	}
 
 	public override void OnLandingBy (Transform player) {
-		if (!BounceToNeighbour (player)) {
+		BounceBack (player);
+		/*if (!BounceToNeighbour (player)) {
 			// Die if no neighbour available
-		}
+		}*/
 	}
 
-	void BouneBack (Transform player) {
-		player.DOShakePosition (0.5f, 0.2f, 5);
-		//player.GetComponent<CharacterMovement> ().ShiftTo (randomNeigh);
+	void BounceBack (Transform player) {
+		//player.DOShakePosition (0.5f, 0.2f, 5);
+		player.GetComponent<CharacterMovement> ().ReverseShift ();
 	}
 
 	bool BounceToNeighbour (Transform player) {
