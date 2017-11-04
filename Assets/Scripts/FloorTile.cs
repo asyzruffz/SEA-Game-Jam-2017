@@ -32,4 +32,24 @@ public class FloorTile : MonoBehaviour {
 	public bool IsLeftValid () {
 		return leftTile != null;
 	}
+	
+	public FloorTile GetUpTile () {
+		return upTile;
+	}
+
+	public FloorTile GetDownTile () {
+		return downTile;
+	}
+
+	public FloorTile GetRightTile () {
+		return rightTile;
+	}
+
+	public FloorTile GetLeftTile () {
+		return leftTile;
+	}
+
+	public Vector3 GetTilePosition () {
+		return transform.position;
+	}
 }
