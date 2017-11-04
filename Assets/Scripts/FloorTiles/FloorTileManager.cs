@@ -7,39 +7,51 @@ public class FloorTileManager : MonoBehaviour {
 	public FloorTile startTile;
 
 	[Header("Generator Settings")]
+	public bool autoGenerate;
+	public float generateDelay = 1;
+	public bool initFirstTile;
+	public float offsetDistance = 1;
 	public GameObject prefabNormalTile;
 	public GameObject prefabSpecialTile;
-	public bool generateOnStart;
-	public float offsetDistance = 1;
 	public List<TilesPattern> patterns = new List<TilesPattern> ();
 
 	FloorTile lastTileGenerated = null;
 	FloorTile lastLeftGenerated = null;
 	FloorTile lastRightGenerated = null;
+	float timer = 0;
 
 	void Start () {
 		if (startTile != null) {
 			lastTileGenerated = startTile;
-		} else if (generateOnStart) {
+		} else if (initFirstTile) {
 			GenerateTileWithOffset (null, Vector3.zero);
 		}
 	}
 	
 	void Update () {
-		if (Input.GetKeyDown(KeyCode.U)) {
-			GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Up);
-		} else if (Input.GetKeyDown (KeyCode.J)) {
-			GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Down);
-		} else if (Input.GetKeyDown (KeyCode.H)) {
-			GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Left);
-		} else if (Input.GetKeyDown (KeyCode.K)) {
-			GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Right);
-		} else if (Input.GetKeyDown(KeyCode.Space)) {
-			GenerateNineTileForward (lastTileGenerated);
+		if (autoGenerate) {
+			if (timer >= generateDelay) {
+				GenerateHallForward (lastTileGenerated);
+				timer -= generateDelay;
+			}
+
+			timer += Time.deltaTime;
+		} else {
+			if (Input.GetKeyDown (KeyCode.U)) {
+				GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Up);
+			} else if (Input.GetKeyDown (KeyCode.J)) {
+				GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Down);
+			} else if (Input.GetKeyDown (KeyCode.H)) {
+				GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Left);
+			} else if (Input.GetKeyDown (KeyCode.K)) {
+				GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Right);
+			} else if (Input.GetKeyDown (KeyCode.Space)) {
+				GenerateHallForward (lastTileGenerated);
+			}
 		}
 	}
 
-	void GenerateNineTileForward (FloorTile refTile) {
+	void GenerateHallForward (FloorTile refTile) {
 		FloorTile anchor = refTile;
 
 		TilesPattern randomPattern = patterns[Random.Range(0, patterns.Count)];
