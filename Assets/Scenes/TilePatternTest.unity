@@ -235,7 +235,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 37
+  field of view: 60
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -259,13 +259,13 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 551580583}
-  m_LocalRotation: {x: 0.44638833, y: -0.16237308, z: 0.0827332, w: 0.8760866}
-  m_LocalPosition: {x: 2.85, y: 12.79, z: -7.67}
+  m_LocalRotation: {x: 0.25000006, y: -0.24999997, z: 0.066987306, w: 0.9330127}
+  m_LocalPosition: {x: 4.028, y: 5.342, z: -7.513}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1869417070}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 54, y: -21, z: 0}
+  m_LocalEulerAnglesHint: {x: 30, y: -30, z: 0}
 --- !u!1 &934910003
 GameObject:
   m_ObjectHideFlags: 0
@@ -451,13 +451,12 @@ MonoBehaviour:
   corridorLength: 5
   prefabNormalTile: {fileID: 1073018263278886, guid: 00aad03abb6881b49bad36cf28da47b1,
     type: 2}
-  prefabSpecialTiles:
-  - {fileID: 1073018263278886, guid: 541b87c08716a664c8e540591d437cbd, type: 2}
-  - {fileID: 1073018263278886, guid: 9ae0c524461275448985544582af238f, type: 2}
+  prefabSpecialTile: {fileID: 1073018263278886, guid: 541b87c08716a664c8e540591d437cbd,
+    type: 2}
   hallPatterns:
+  - {fileID: 11400000, guid: 15e85ce8bd4e6b44eb5e5501933ac61c, type: 2}
   - {fileID: 11400000, guid: 97800fe7182934c4d9e36929ec52d730, type: 2}
   - {fileID: 11400000, guid: 2f6814eaedd1ef94f9b7ba154c67b0b1, type: 2}
-  - {fileID: 11400000, guid: 306b17f37524fea4a83f25fda4152688, type: 2}
   - {fileID: 11400000, guid: 1cd99df3d24d587478c6cc3951a09265, type: 2}
   - {fileID: 11400000, guid: d521e9b57f9f19848b7eee416bd0ef9f, type: 2}
   - {fileID: 11400000, guid: 3fd2380d2b4de314db9070c96a9191c2, type: 2}
