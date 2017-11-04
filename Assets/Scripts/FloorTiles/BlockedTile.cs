@@ -6,8 +6,10 @@ using DG.Tweening;
 public class BlockedTile : FloorTile {
 
 	public override void Setup () {
+		base.Setup ();
+
 		// Make the tile inaccessible from neighbour
-		if (upTile != null) {
+		/*if (upTile != null) {
 			upTile.downTile = null;
 		}
 		if (downTile != null) {
@@ -18,13 +20,18 @@ public class BlockedTile : FloorTile {
 		}
 		if (leftTile != null) {
 			leftTile.rightTile = null;
-		}
+		}*/
 	}
 
 	public override void OnLandingBy (Transform player) {
 		if (!BounceToNeighbour (player)) {
 			// Die if no neighbour available
 		}
+	}
+
+	void BouneBack (Transform player) {
+		player.DOShakePosition (0.5f, 0.2f, 5);
+		//player.GetComponent<CharacterMovement> ().ShiftTo (randomNeigh);
 	}
 
 	bool BounceToNeighbour (Transform player) {
@@ -43,11 +50,11 @@ public class BlockedTile : FloorTile {
 			availableNeighbours.Add (leftTile);
 		}
 
-		player.DOShakePosition (0.5f, 0.2f);
 		FloorTile randomNeigh = availableNeighbours[Random.Range (0, availableNeighbours.Count)];
 		if (randomNeigh != null) {
 			player.GetComponent<CharacterMovement> ().ShiftTo (randomNeigh);
 		}
+		player.DOShakePosition (0.5f, 0.2f, 5);
 
 		return randomNeigh != null;
 	}

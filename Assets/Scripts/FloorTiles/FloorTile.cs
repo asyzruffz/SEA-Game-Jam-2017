@@ -16,8 +16,9 @@ public class FloorTile : MonoBehaviour {
 	public bool isCheckpoint;
 	[HideInInspector]
 	public FloorTileManager manager;
+	Vector3 oriPos;
 	bool onceGenerated;
-
+	
 	public bool IsTileValidAt (TileDirection direction) {
 		switch (direction) {
 			default:
@@ -52,11 +53,11 @@ public class FloorTile : MonoBehaviour {
 	}
 
 	public Vector3 GetTilePosition () {
-		return transform.position;
+		return oriPos;
 	}
 	
 	public virtual void Setup () {
-
+		oriPos = transform.position;
 	}
 
 	public virtual void OnLandingBy (Transform player) {

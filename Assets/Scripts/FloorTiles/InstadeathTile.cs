@@ -5,6 +5,8 @@ using DG.Tweening;
 
 public class InstadeathTile : FloorTile {
 
+	bool isFallen;
+
 	void Start () {
 		DOTween.Init (false, true, LogBehaviour.ErrorsOnly);
 	}
@@ -21,7 +23,10 @@ public class InstadeathTile : FloorTile {
 	}
 
 	void FallDownWith (Transform player) {
-		transform.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ();
 		player.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ();
+		if (!isFallen) {
+			transform.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ();
+			isFallen = true;
+		}
 	}
 }
