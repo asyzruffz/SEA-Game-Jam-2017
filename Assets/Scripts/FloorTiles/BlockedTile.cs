@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class BlockedTile : FloorTile {
 
@@ -20,13 +21,13 @@ public class BlockedTile : FloorTile {
 		}
 	}
 
-	public override void OnLandingAt () {
-		if (!BounceToNeighbour ()) {
+	public override void OnLandingBy (Transform player) {
+		if (!BounceToNeighbour (player)) {
 			// Die if no neighbour available
 		}
 	}
 
-	bool BounceToNeighbour () {
+	bool BounceToNeighbour (Transform player) {
 		List<FloorTile> availableNeighbours = new List<FloorTile> ();
 
 		if (upTile != null && !upTile.isSpecial) {
@@ -42,9 +43,11 @@ public class BlockedTile : FloorTile {
 			availableNeighbours.Add (leftTile);
 		}
 
+		player.DOShakePosition (0.5f, 0.2f);
 		FloorTile randomNeigh = availableNeighbours[Random.Range (0, availableNeighbours.Count)];
-
-		// ShiftTo neighbours
+		if (randomNeigh != null) {
+			player.GetComponent<CharacterMovement> ().ShiftTo (randomNeigh);
+		}
 
 		return randomNeigh != null;
 	}
