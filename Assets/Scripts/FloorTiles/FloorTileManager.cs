@@ -7,63 +7,75 @@ public class FloorTileManager : MonoBehaviour {
 	public FloorTile startTile;
 
 	[Header("Generator Settings")]
+	public bool autoGenerate;
+	public float generateDelay = 1;
+	public bool initFirstTile;
+	public float offsetDistance = 1;
 	public GameObject prefabNormalTile;
 	public GameObject prefabSpecialTile;
-	public bool generateOnStart;
-	public float offsetDistance = 1;
 	public List<TilesPattern> patterns = new List<TilesPattern> ();
 
-	FloorTile lastTileGenerated;
+	FloorTile lastTileGenerated = null;
+	FloorTile lastLeftGenerated = null;
+	FloorTile lastRightGenerated = null;
+	float timer = 0;
 
 	void Start () {
 		if (startTile != null) {
 			lastTileGenerated = startTile;
-		} else if (generateOnStart) {
+		} else if (initFirstTile) {
 			GenerateTileWithOffset (null, Vector3.zero);
 		}
 	}
 	
 	void Update () {
-		if (Input.GetKeyDown(KeyCode.U)) {
-			GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Up);
-		} else if (Input.GetKeyDown (KeyCode.J)) {
-			GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Down);
-		} else if (Input.GetKeyDown (KeyCode.H)) {
-			GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Left);
-		} else if (Input.GetKeyDown (KeyCode.K)) {
-			GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Right);
-		} else if (Input.GetKeyDown(KeyCode.Space)) {
-			GenerateNineTileForward (lastTileGenerated);
+		if (autoGenerate) {
+			if (timer >= generateDelay) {
+				GenerateHallForward (lastTileGenerated);
+				timer -= generateDelay;
+			}
+
+			timer += Time.deltaTime;
+		} else {
+			if (Input.GetKeyDown (KeyCode.U)) {
+				GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Up);
+			} else if (Input.GetKeyDown (KeyCode.J)) {
+				GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Down);
+			} else if (Input.GetKeyDown (KeyCode.H)) {
+				GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Left);
+			} else if (Input.GetKeyDown (KeyCode.K)) {
+				GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Right);
+			} else if (Input.GetKeyDown (KeyCode.Space)) {
+				GenerateHallForward (lastTileGenerated);
+			}
 		}
 	}
 
-	void GenerateNineTileForward (FloorTile refTile) {
-		FloorTile middleAnchor = refTile;
-		FloorTile leftAnchor = null;
-		FloorTile rightAnchor = null;
+	void GenerateHallForward (FloorTile refTile) {
+		FloorTile anchor = refTile;
 
 		TilesPattern randomPattern = patterns[Random.Range(0, patterns.Count)];
 
 		for (int i = 0; i < randomPattern.pattern.Count; i++) {
-			GenerateRelativeToTileAt (middleAnchor, TileDirection.Up, randomPattern.pattern[i].col2);
-			middleAnchor = lastTileGenerated;
+			GenerateRelativeToTileAt (anchor, TileDirection.Up, randomPattern.pattern[i].col2);
+			anchor = lastTileGenerated;
 
-			GenerateRelativeToTileAt (middleAnchor, TileDirection.Left, randomPattern.pattern[i].col1);
-			if (leftAnchor != null) {
-				leftAnchor.upTile = lastTileGenerated;
+			GenerateRelativeToTileAt (anchor, TileDirection.Left, randomPattern.pattern[i].col1);
+			if (lastLeftGenerated != null) {
+				lastLeftGenerated.upTile = lastTileGenerated;
 			}
-			lastTileGenerated.downTile = leftAnchor;
-			leftAnchor = lastTileGenerated;
+			lastTileGenerated.downTile = lastLeftGenerated;
+			lastLeftGenerated = lastTileGenerated;
 
-			GenerateRelativeToTileAt (middleAnchor, TileDirection.Right, randomPattern.pattern[i].col3);
-			if (rightAnchor != null) {
-				rightAnchor.upTile = lastTileGenerated;
+			GenerateRelativeToTileAt (anchor, TileDirection.Right, randomPattern.pattern[i].col3);
+			if (lastRightGenerated != null) {
+				lastRightGenerated.upTile = lastTileGenerated;
 			}
-			lastTileGenerated.downTile = rightAnchor;
-			rightAnchor = lastTileGenerated;
+			lastTileGenerated.downTile = lastRightGenerated;
+			lastRightGenerated = lastTileGenerated;
 		}
-
-		lastTileGenerated = middleAnchor;
+		
+		lastTileGenerated = anchor;
 	}
 
 	void GenerateRelativeToTileAt (FloorTile refTile, TileDirection direction, bool isSpecialTile = false) {
