@@ -64,10 +64,10 @@ public class CharacterMovement : MonoBehaviour {
 	}
 
 	void RunMobileInput () {
-		if(canMove == true)
-		{
+		if(canMove) {
 			return;
 		}
+
 		touch = new TouchGesture ();
 
 		StartCoroutine (touch.CheckHorizontalSwipes (
@@ -79,10 +79,10 @@ public class CharacterMovement : MonoBehaviour {
 	}
 
 	void RunDefaultInput () {
-		if(canMove == true)
-		{
+		if(canMove) {
 			return;
 		}
+
 		int horizontal = Input.GetButtonDown ("Horizontal") ? (int)(Input.GetAxisRaw ("Horizontal")) : 0;   //Used to store the horizontal move direction.
 		int vertical = Input.GetButtonDown ("Vertical") ? (int)(Input.GetAxisRaw ("Vertical")) : 0;        //Used to store the vertical move direction.
 

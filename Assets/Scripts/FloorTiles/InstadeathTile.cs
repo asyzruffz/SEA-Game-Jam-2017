@@ -26,9 +26,9 @@ public class InstadeathTile : FloorTile {
 	}
 
 	void FallDownWith (Transform player) {
-		player.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ();
+		player.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ().SetDelay (0.5f);
 		if (!isFallen) {
-			transform.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ();
+			transform.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ().SetDelay (0.5f);
 			isFallen = true;
 		}
 	}
