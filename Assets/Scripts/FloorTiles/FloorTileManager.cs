@@ -38,18 +38,32 @@ public class FloorTileManager : MonoBehaviour {
 	}
 
 	void GenerateNineTileForward (FloorTile refTile) {
-		FloorTile anchor = refTile;
+		FloorTile middleAnchor = refTile;
+		FloorTile leftAnchor = null;
+		FloorTile rightAnchor = null;
 
 		TilesPattern randomPattern = patterns[Random.Range(0, patterns.Count)];
 
 		for (int i = 0; i < randomPattern.pattern.Count; i++) {
-			GenerateRelativeToTileAt (anchor, TileDirection.Up, randomPattern.pattern[i].col2);
-			anchor = lastTileGenerated;
-			GenerateRelativeToTileAt (anchor, TileDirection.Left, randomPattern.pattern[i].col1);
-			GenerateRelativeToTileAt (anchor, TileDirection.Right, randomPattern.pattern[i].col3);
+			GenerateRelativeToTileAt (middleAnchor, TileDirection.Up, randomPattern.pattern[i].col2);
+			middleAnchor = lastTileGenerated;
+
+			GenerateRelativeToTileAt (middleAnchor, TileDirection.Left, randomPattern.pattern[i].col1);
+			if (leftAnchor != null) {
+				leftAnchor.upTile = lastTileGenerated;
+			}
+			lastTileGenerated.downTile = leftAnchor;
+			leftAnchor = lastTileGenerated;
+
+			GenerateRelativeToTileAt (middleAnchor, TileDirection.Right, randomPattern.pattern[i].col3);
+			if (rightAnchor != null) {
+				rightAnchor.upTile = lastTileGenerated;
+			}
+			lastTileGenerated.downTile = rightAnchor;
+			rightAnchor = lastTileGenerated;
 		}
 
-		lastTileGenerated = anchor;
+		lastTileGenerated = middleAnchor;
 	}
 
 	void GenerateRelativeToTileAt (FloorTile refTile, TileDirection direction, bool isSpecialTile = false) {
