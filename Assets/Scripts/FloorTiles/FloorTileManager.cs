@@ -12,8 +12,10 @@ public class FloorTileManager : MonoBehaviour {
 	public bool initFirstTile;
 	public float offsetDistance = 1;
 	public int corridorLength = 10;
+
+	[Header ("Spawnables")]
 	public GameObject prefabNormalTile;
-	public GameObject prefabSpecialTile;
+	public List<GameObject> prefabSpecialTiles = new List<GameObject> ();
 	public List<TilesPattern> hallPatterns = new List<TilesPattern> ();
 
 	FloorTile lastTileGenerated = null;
@@ -21,6 +23,7 @@ public class FloorTileManager : MonoBehaviour {
 	FloorTile lastLeftGenerated = null;
 	FloorTile lastRightGenerated = null;
 	float timer = 0;
+	bool toggleFloor;
 
 	void Start () {
 		if (startTile != null) {
@@ -28,6 +31,8 @@ public class FloorTileManager : MonoBehaviour {
 		} else if (initFirstTile) {
 			GenerateTileWithOffset (null, Vector3.zero);
 		}
+
+		GenerateNextPart ();
 	}
 	
 	void Update () {
@@ -60,6 +65,16 @@ public class FloorTileManager : MonoBehaviour {
 		}
 	}
 
+	public void GenerateNextPart () {
+		if (toggleFloor) {
+			GenerateCorridorForward (lastMiddleGenerated == null ? lastTileGenerated : lastMiddleGenerated);
+		} else {
+			GenerateHallForward (lastMiddleGenerated == null ? lastTileGenerated : lastMiddleGenerated);
+		}
+
+		toggleFloor = !toggleFloor;
+	}
+
 	void GenerateHallForward (FloorTile refTile) {
 		FloorTile anchor = refTile;
 
@@ -67,6 +82,7 @@ public class FloorTileManager : MonoBehaviour {
 
 		for (int i = 0; i < randomPattern.pattern.Count; i++) {
 			GenerateRelativeToTileAt (anchor, TileDirection.Up, randomPattern.pattern[i].col2);
+			lastTileGenerated.Setup ();
 			anchor = lastTileGenerated;
 
 			GenerateRelativeToTileAt (anchor, TileDirection.Left, randomPattern.pattern[i].col1);
@@ -74,6 +90,7 @@ public class FloorTileManager : MonoBehaviour {
 				lastLeftGenerated.upTile = lastTileGenerated;
 			}
 			lastTileGenerated.downTile = lastLeftGenerated;
+			lastTileGenerated.Setup ();
 			lastLeftGenerated = lastTileGenerated;
 
 			GenerateRelativeToTileAt (anchor, TileDirection.Right, randomPattern.pattern[i].col3);
@@ -81,10 +98,19 @@ public class FloorTileManager : MonoBehaviour {
 				lastRightGenerated.upTile = lastTileGenerated;
 			}
 			lastTileGenerated.downTile = lastRightGenerated;
+			lastTileGenerated.Setup ();
 			lastRightGenerated = lastTileGenerated;
 		}
 
 		lastMiddleGenerated = anchor;
+
+		FloorTile exit = GetEmptyHallEndTile ();
+		if (exit != null) {
+			exit.isCheckpoint = true;
+			lastMiddleGenerated = exit;
+		} else {
+			Debug.Log ("No empty tiles to exit hall into corridor!");
+		}
 	}
 
 	void GenerateCorridorForward (FloorTile refTile) {
@@ -112,6 +138,7 @@ public class FloorTileManager : MonoBehaviour {
 		}
 
 		GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Up);
+		lastTileGenerated.isCheckpoint = true;
 		lastMiddleGenerated = lastTileGenerated;
 		lastLeftGenerated = lastRightGenerated = null;
 	}
@@ -130,7 +157,7 @@ public class FloorTileManager : MonoBehaviour {
 		}
 
 		if (endHallTiles.Count > 0) {
-			return endHallTiles[Random.Range(0, endHallTiles.Count)];
+			return endHallTiles[Random.Range (0, endHallTiles.Count)];
 		} else {
 			return null;
 		}
@@ -174,10 +201,12 @@ public class FloorTileManager : MonoBehaviour {
 	void GenerateTileWithOffset (FloorTile refTile, Vector3 offset, bool isSpecialTile = false) {
 		Vector3 refPos = (refTile == null) ? Vector3.zero : refTile.GetTilePosition ();
 
-		GameObject newTile = Instantiate (isSpecialTile ? prefabSpecialTile : prefabNormalTile, transform);
+		GameObject newTile = Instantiate (isSpecialTile ? prefabSpecialTiles[Random.Range(0, prefabSpecialTiles.Count)] : prefabNormalTile, transform);
 		newTile.transform.localPosition = refPos + offset;
 
-		lastTileGenerated = newTile.GetComponent<FloorTile> ();
-		lastTileGenerated.GetComponent<FloorTile> ().isSpecial = isSpecialTile;
+		FloorTile tile = newTile.GetComponent<FloorTile> ();
+		tile.manager = this;
+		tile.isSpecial = isSpecialTile;
+		lastTileGenerated = tile;
 	}
 }

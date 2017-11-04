@@ -12,6 +12,11 @@ public class FloorTile : MonoBehaviour {
 
 	[HideInInspector]
 	public bool isSpecial;
+	[HideInInspector]
+	public bool isCheckpoint;
+	[HideInInspector]
+	public FloorTileManager manager;
+	bool onceGenerated;
 
 	public bool IsTileValidAt (TileDirection direction) {
 		switch (direction) {
@@ -48,6 +53,22 @@ public class FloorTile : MonoBehaviour {
 
 	public Vector3 GetTilePosition () {
 		return transform.position;
+	}
+	
+	public virtual void Setup () {
+
+	}
+
+	public virtual void OnLandingBy (Transform player) {
+		if (isCheckpoint && !onceGenerated) {
+			manager.GenerateNextPart ();
+			onceGenerated = true;
+		}
+	}
+
+	public virtual void OnDestroyed () {
+		// if hold in list, remove it
+		Destroy (gameObject);
 	}
 }
 

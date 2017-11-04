@@ -72,9 +72,10 @@ public class CharacterMovement : MonoBehaviour {
 		}
 	}
 	
-	void ShiftTo (FloorTile tile) {
+	public void ShiftTo (FloorTile tile) {
 		// TODO animation
 		transform.position = tile.GetTilePosition ();
+		tile.OnLandingBy (transform);
 		currentTile = tile;
 	}
 }
