@@ -1,12 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using DG.Tweening;
 
 public class InstadeathTile : FloorTile {
 
+	public Image tiedIcon;
+	
 	bool isFallen;
-
+	
 	void Start () {
 		DOTween.Init (false, true, LogBehaviour.ErrorsOnly);
 	}
