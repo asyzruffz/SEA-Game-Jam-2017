@@ -2,20 +2,16 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum TileDirection {
-	Middle,
-	Up,
-	Down,
-	Right,
-	Left
-}
-
 public class FloorTile : MonoBehaviour {
 
+	[Header("Neighbours")]
 	public FloorTile upTile;
 	public FloorTile downTile;
 	public FloorTile rightTile;
 	public FloorTile leftTile;
+
+	[HideInInspector]
+	public bool isSpecial;
 
 	public bool IsTileValidAt (TileDirection direction) {
 		switch (direction) {
@@ -53,4 +49,12 @@ public class FloorTile : MonoBehaviour {
 	public Vector3 GetTilePosition () {
 		return transform.position;
 	}
+}
+
+public enum TileDirection {
+	Middle,
+	Up,
+	Down,
+	Right,
+	Left
 }
