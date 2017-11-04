@@ -451,8 +451,8 @@ MonoBehaviour:
   corridorLength: 5
   prefabNormalTile: {fileID: 1073018263278886, guid: 00aad03abb6881b49bad36cf28da47b1,
     type: 2}
-  prefabSpecialTile: {fileID: 1073018263278886, guid: 541b87c08716a664c8e540591d437cbd,
-    type: 2}
+  prefabSpecialTiles:
+  - {fileID: 1073018263278886, guid: 541b87c08716a664c8e540591d437cbd, type: 2}
   hallPatterns:
   - {fileID: 11400000, guid: 811a017fe8fe0a14995e55f3049bbbb1, type: 2}
   - {fileID: 11400000, guid: a19144aa30c60d24ca9509b830e54a02, type: 2}

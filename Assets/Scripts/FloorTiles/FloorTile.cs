@@ -12,6 +12,7 @@ public class FloorTile : MonoBehaviour {
 
 	[HideInInspector]
 	public bool isSpecial;
+	public FloorTileManager manager;
 
 	public bool IsTileValidAt (TileDirection direction) {
 		switch (direction) {
@@ -48,6 +49,19 @@ public class FloorTile : MonoBehaviour {
 
 	public Vector3 GetTilePosition () {
 		return transform.position;
+	}
+	
+	public virtual void Setup () {
+
+	}
+
+	public virtual void OnLandingAt () {
+
+	}
+
+	public virtual void OnDestroyed () {
+		// if hold in list, remove it
+		Destroy (gameObject);
 	}
 }
 

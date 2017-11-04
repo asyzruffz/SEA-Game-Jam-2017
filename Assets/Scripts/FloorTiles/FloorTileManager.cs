@@ -12,8 +12,10 @@ public class FloorTileManager : MonoBehaviour {
 	public bool initFirstTile;
 	public float offsetDistance = 1;
 	public int corridorLength = 10;
+
+	[Header ("Spawnables")]
 	public GameObject prefabNormalTile;
-	public GameObject prefabSpecialTile;
+	public List<GameObject> prefabSpecialTiles = new List<GameObject> ();
 	public List<TilesPattern> hallPatterns = new List<TilesPattern> ();
 
 	FloorTile lastTileGenerated = null;
@@ -174,10 +176,13 @@ public class FloorTileManager : MonoBehaviour {
 	void GenerateTileWithOffset (FloorTile refTile, Vector3 offset, bool isSpecialTile = false) {
 		Vector3 refPos = (refTile == null) ? Vector3.zero : refTile.GetTilePosition ();
 
-		GameObject newTile = Instantiate (isSpecialTile ? prefabSpecialTile : prefabNormalTile, transform);
+		GameObject newTile = Instantiate (isSpecialTile ? prefabSpecialTiles[Random.Range(0, prefabSpecialTiles.Count)] : prefabNormalTile, transform);
 		newTile.transform.localPosition = refPos + offset;
 
-		lastTileGenerated = newTile.GetComponent<FloorTile> ();
-		lastTileGenerated.GetComponent<FloorTile> ().isSpecial = isSpecialTile;
+		FloorTile tile = newTile.GetComponent<FloorTile> ();
+		tile.manager = this;
+		tile.isSpecial = isSpecialTile;
+		tile.Setup ();
+		lastTileGenerated = tile;
 	}
 }
