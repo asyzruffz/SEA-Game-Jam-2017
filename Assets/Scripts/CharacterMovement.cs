@@ -19,10 +19,12 @@ public class CharacterMovement : MonoBehaviour {
 	TouchGesture touch;
 	Animator playerAnim;
 	FloorTile prevTile;
+	float yOffset;
 
 	void Start () {
 		
 		playerAnim = GetComponentInChildren<Animator>();
+		yOffset = transform.position.y;
 
 		//Check if we are running on iOS, Android, Windows Phone 8 or Unity iPhone
 #if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
@@ -119,6 +121,12 @@ public class CharacterMovement : MonoBehaviour {
 			if(direction == TileDirection.Up)
 			{
 				targetDir = Quaternion.Euler(Vector3.zero);
+
+				if (GameController.Instance != null) {
+					if (!GameController.Instance.isPlaying) {
+						GameController.Instance.StartGame ();
+					}
+				}
 			}
 			else if(direction == TileDirection.Down)
 			{
@@ -132,6 +140,7 @@ public class CharacterMovement : MonoBehaviour {
 			{
 				targetDir = Quaternion.Euler(Vector3.down * 90.0f);
 			}
+
 			transform.rotation = targetDir;
 			transform.LookAt(Target);
 			playerAnim.SetTrigger("isJumpAnim");
@@ -149,7 +158,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	public void ReverseShift () {
 		if (prevTile != null) {
-			Target = new Vector3 (prevTile.GetTilePosition ().x, transform.position.y, prevTile.GetTilePosition ().z);
+			Target = new Vector3 (prevTile.GetTilePosition ().x, yOffset, prevTile.GetTilePosition ().z);
 			currentTile = prevTile;
 		}
 	}
@@ -157,5 +166,28 @@ public class CharacterMovement : MonoBehaviour {
 	public void JumpEvent()
 	{
 		canMove = true;
+	}
+
+	public void SetMovementEnabled (bool enabled) {
+		canMove = enabled;
+	}
+
+	bool CheckLife () {
+		bool death = false;
+
+		if (GameController.Instance) {
+			if (GameController.Instance.isPlaying && currentTile != null) {
+				death = true;
+				GameController.Instance.isGameOver = true;
+				GameController.Instance.isPlaying = false;
+			}
+		}
+
+		return death;
+	}
+
+	public void Die () {
+		SetMovementEnabled (false);
+
 	}
 }
