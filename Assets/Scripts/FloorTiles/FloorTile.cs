@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class FloorTile : MonoBehaviour {
 
@@ -88,7 +89,13 @@ public class FloorTile : MonoBehaviour {
 
 	public virtual void OnDestroyed () {
 		// if hold in list, remove it
-		Destroy (gameObject);
+		TileFall ();
+		Destroy (gameObject, 2);
+	}
+
+	public void TileFall () {
+		transform.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ().SetDelay (0.5f);
+		transform.DOShakePosition (1, 0.2f).SetRelative ().SetDelay (0.8f);
 	}
 }
 

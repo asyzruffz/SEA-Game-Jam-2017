@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-using DG.Tweening;
 
 public class InstadeathTile : FloorTile {
 
@@ -24,8 +23,7 @@ public class InstadeathTile : FloorTile {
 	void FallDownWith (Transform player) {
 		player.GetComponent<CharacterMovement> ().Fall ();
 		if (!isFallen) {
-			transform.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ().SetDelay (0.5f);
-			transform.DOShakePosition (1, 0.2f).SetRelative ().SetDelay (0.8f);
+			TileFall ();
 			isFallen = true;
 		}
 	}
