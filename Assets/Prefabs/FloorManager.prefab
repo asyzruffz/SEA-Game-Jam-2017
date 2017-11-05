@@ -179,7 +179,7 @@ MonoBehaviour:
   generateDelay: 1
   initFirstTile: 0
   offsetDistance: 1
-  corridorLength: 10
+  corridorLength: 5
   prefabNormalTile: {fileID: 1400190091851214, guid: 49ffec0774ce7a94fab0f6e5678f4066,
     type: 2}
   prefabSpecialTiles:

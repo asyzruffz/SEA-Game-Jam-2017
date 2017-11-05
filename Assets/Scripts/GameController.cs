@@ -16,7 +16,7 @@ public class GameController : Singleton<GameController> {
 	public FloorTileManager floor;
 
 	void Start () {
-		
+		SoundManager.instance.PlayBGM ("BGM Gameplay");
 	}
 	
 	void Update () {
