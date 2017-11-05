@@ -9,16 +9,25 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7b0d4e015bc62c149bcf88657002d85d, type: 3}
-  m_Name: 3x3_2_(0)
+  m_Name: 3x6_5_(0)
   m_EditorClassIdentifier: 
-  rowNo: 3
+  rowNo: 6
   pattern:
   - col1: 0
     col2: 0
     col3: 0
-  - col1: 0
+  - col1: 1
+    col2: 1
+    col3: 0
+  - col1: 1
     col2: 0
     col3: 0
   - col1: 0
+    col2: 0
+    col3: 1
+  - col1: 0
     col2: 1
     col3: 0
+  - col1: 0
+    col2: 0
+    col3: 1

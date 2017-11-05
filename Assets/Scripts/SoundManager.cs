@@ -117,7 +117,7 @@ public class SoundManager : MonoBehaviour
         }
     }
 
-    public void PlayBGM(string _audioName, float _volumeControl = 1f)
+    public void PlayBGM(string _audioName, float _volumeControl = 0.5f)
     {
         AudioClip _ac = null;
         AudioPieceList.TryGetValue(_audioName, out _ac);

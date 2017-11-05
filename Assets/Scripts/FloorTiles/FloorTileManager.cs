@@ -28,6 +28,7 @@ public class FloorTileManager : MonoBehaviour {
 	bool toggleFloor;
 
 	void Start () {
+		SoundManager.instance.PlayBGM("BGM Gameplay");
 		if (startTile != null) {
 			lastTileGenerated = startTile;
 		} else if (initFirstTile) {
