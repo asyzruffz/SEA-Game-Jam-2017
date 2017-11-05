@@ -5,6 +5,8 @@ using UnityEngine;
 public class FloorTileManager : MonoBehaviour {
 
 	public FloorTile startTile;
+	public float baseDecay = 5;
+	public float rowDecay = 2;
 
 	[Header("Generator Settings")]
 	public bool autoGenerate;
@@ -72,7 +74,9 @@ public class FloorTileManager : MonoBehaviour {
 			int occurances = Random.Range (1, 3);
 			for (int i = 0; i < occurances; i++) {
 				GenerateHallForward (lastMiddleGenerated == null ? lastTileGenerated : lastMiddleGenerated, i == (occurances - 1));
+				baseDecay += (3 * rowDecay);
 			}
+			baseDecay -= (occurances * 3 * rowDecay);
 		}
 
 		toggleFloor = !toggleFloor;
@@ -85,10 +89,12 @@ public class FloorTileManager : MonoBehaviour {
 
 		for (int i = 0; i < randomPattern.pattern.Count; i++) {
 			GenerateRelativeToTileAt (anchor, TileDirection.Up, randomPattern.pattern[i].col2);
+			lastTileGenerated.lifetime = baseDecay + (i * rowDecay);
 			lastTileGenerated.Setup ();
 			anchor = lastTileGenerated;
 
 			GenerateRelativeToTileAt (anchor, TileDirection.Left, randomPattern.pattern[i].col1);
+			lastTileGenerated.lifetime = baseDecay + (i * rowDecay);
 			if (lastLeftGenerated != null) {
 				lastLeftGenerated.upTile = lastTileGenerated;
 			}
@@ -97,6 +103,7 @@ public class FloorTileManager : MonoBehaviour {
 			lastLeftGenerated = lastTileGenerated;
 
 			GenerateRelativeToTileAt (anchor, TileDirection.Right, randomPattern.pattern[i].col3);
+			lastTileGenerated.lifetime = baseDecay + (i * rowDecay);
 			if (lastRightGenerated != null) {
 				lastRightGenerated.upTile = lastTileGenerated;
 			}
@@ -118,6 +125,7 @@ public class FloorTileManager : MonoBehaviour {
 
 	void GenerateCorridorForward (FloorTile refTile) {
 		GenerateRelativeToTileAt (refTile, TileDirection.Up);
+		lastTileGenerated.lifetime = baseDecay + rowDecay;
 		int lastTurnCount = 1;
 
 		TileDirection oldDir = TileDirection.Up;
@@ -136,11 +144,13 @@ public class FloorTileManager : MonoBehaviour {
 			}
 			
 			GenerateRelativeToTileAt (lastTileGenerated, dir);
+			lastTileGenerated.lifetime = baseDecay + ((i + 1) * rowDecay);
 			lastTurnCount = (dir == oldDir) ? lastTurnCount + 1 : 0;
 			oldDir = dir;
 		}
 
 		GenerateRelativeToTileAt (lastTileGenerated, TileDirection.Up);
+		lastTileGenerated.lifetime = baseDecay + (corridorLength * rowDecay);
 		lastTileGenerated.isCheckpoint = true;
 		lastMiddleGenerated = lastTileGenerated;
 		lastLeftGenerated = lastRightGenerated = null;

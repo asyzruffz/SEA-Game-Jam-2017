@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class FloorTile : MonoBehaviour {
 
+	public float lifetime = 4;
+
 	[Header("Neighbours")]
 	public FloorTile upTile;
 	public FloorTile downTile;
@@ -18,7 +20,22 @@ public class FloorTile : MonoBehaviour {
 	public FloorTileManager manager;
 	Vector3 oriPos;
 	bool onceGenerated;
-	
+	bool startedLife;
+
+	protected virtual void Update () {
+		if (GameController.Instance != null) {
+			if (!startedLife && GameController.Instance.isPlaying) {
+				startedLife = true;
+			}
+		}
+
+		if (lifetime <= 0) {
+			OnDestroyed ();
+		}
+
+		lifetime -= Time.deltaTime;
+	}
+
 	public bool IsTileValidAt (TileDirection direction) {
 		switch (direction) {
 			default:
