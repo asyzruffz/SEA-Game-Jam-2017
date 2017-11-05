@@ -33,7 +33,9 @@ public class FloorTile : MonoBehaviour {
 			OnDestroyed ();
 		}
 
-		lifetime -= Time.deltaTime;
+		if (startedLife) {
+			lifetime -= Time.deltaTime;
+		}
 	}
 
 	public bool IsTileValidAt (TileDirection direction) {
