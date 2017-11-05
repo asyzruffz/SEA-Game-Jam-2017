@@ -17,7 +17,7 @@ namespace UnityStandardAssets.Cameras
 		}
 
 		[SerializeField] protected Transform m_Target;            // The target object to follow
-		[SerializeField] private Vector3 m_Offset;            // The offset from the target object to follow
+		[SerializeField] private Vector3 m_Offset = new Vector3 (2.8f, 12.8f, -7.0f); // The offset from the target object to follow
 		[SerializeField] private bool m_AutoTargetPlayer = true;  // Whether the rig should automatically target the player.
 		[SerializeField] private UpdateType m_UpdateType;         // stores the selected update type
 
@@ -189,7 +189,7 @@ namespace UnityStandardAssets.Cameras
             }
 
             // camera position moves towards target position:
-			transform.position = Vector3.Lerp(transform.position, m_Target.position + m_Offset, deltaTime*m_MoveSpeed); //(2.8f, 12.8f, -7.0f) is set from inspector
+			transform.position = Vector3.Lerp(transform.position, m_Target.position + m_Offset, deltaTime*m_MoveSpeed);
 
 			// camera's rotation is split into two parts, which can have independend speed settings:
 			// rotating towards the target's forward direction (which encompasses its 'yaw' and 'pitch')

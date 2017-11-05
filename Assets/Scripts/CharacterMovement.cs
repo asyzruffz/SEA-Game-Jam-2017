@@ -198,6 +198,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	public void Die () {
 		SetMovementEnabled (false);
+		currentTile = null;
 		// stop everything
 		// destroy gameobj
 	}
@@ -205,5 +206,6 @@ public class CharacterMovement : MonoBehaviour {
 	public void Fall () {
 		SetMovementEnabled (false);
 		transform.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ().SetDelay (0.5f);
+		Invoke ("Die", 1.5f);
 	}
 }
