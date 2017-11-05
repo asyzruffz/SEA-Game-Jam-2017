@@ -38,9 +38,7 @@ public class CharacterMovement : MonoBehaviour {
 
 	void Update () {
 
-#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
-		RunDefaultInput ();
-#endif
+
 		if(canMove)
 		{
 			// Calculate our distance from target
@@ -54,6 +52,12 @@ public class CharacterMovement : MonoBehaviour {
 				transform.position = Target;
 				canMove = false;
 			}
+		}
+		else
+		{
+			#if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
+			RunDefaultInput ();
+			#endif
 		}
 
 		if(canRot)
