@@ -4,11 +4,25 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour {
 
+	public Vector3 Target;
+	Vector3 prevPos;
+
+	Quaternion targetDir = Quaternion.Euler(Vector3.zero);
+	bool canRot = false;
+	public float rotateSpeed = 1.0f;
+	public float defaultSpeed = 0.5f;
+	private float _distanceToTarget;
+	bool canMove = false;
+
 	public FloorTile currentTile;
 
 	TouchGesture touch;
+	Animator playerAnim;
+	FloorTile prevTile;
 
 	void Start () {
+		
+		playerAnim = GetComponentInChildren<Animator>();
 
 		//Check if we are running on iOS, Android, Windows Phone 8 or Unity iPhone
 #if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
@@ -23,10 +37,37 @@ public class CharacterMovement : MonoBehaviour {
 #if UNITY_EDITOR || UNITY_STANDALONE || UNITY_WEBPLAYER
 		RunDefaultInput ();
 #endif
+		if(canMove)
+		{
+			// Calculate our distance from target
+			Vector3 deltaPosition = Target - transform.position;
+			_distanceToTarget = deltaPosition.magnitude;
 
+			// Set our position
+			transform.position += deltaPosition * defaultSpeed * Time.deltaTime;
+			if(_distanceToTarget <= 0.1f)
+			{
+				transform.position = Target;
+				canMove = false;
+			}
+		}
+
+		if(canRot)
+		{
+			transform.rotation = Quaternion.Euler(new Vector3(0.0f, transform.rotation.y + (rotateSpeed * Time.deltaTime), 0.0f));
+//			Debug.Log(transform.rotation);
+			if(transform.rotation == targetDir)
+			{
+				canRot = false;
+			}
+		}
 	}
 
 	void RunMobileInput () {
+		if(canMove) {
+			return;
+		}
+
 		touch = new TouchGesture ();
 
 		StartCoroutine (touch.CheckHorizontalSwipes (
@@ -38,6 +79,10 @@ public class CharacterMovement : MonoBehaviour {
 	}
 
 	void RunDefaultInput () {
+		if(canMove) {
+			return;
+		}
+
 		int horizontal = Input.GetButtonDown ("Horizontal") ? (int)(Input.GetAxisRaw ("Horizontal")) : 0;   //Used to store the horizontal move direction.
 		int vertical = Input.GetButtonDown ("Vertical") ? (int)(Input.GetAxisRaw ("Vertical")) : 0;        //Used to store the vertical move direction.
 
@@ -61,21 +106,56 @@ public class CharacterMovement : MonoBehaviour {
 	}
 
 	void MoveTowards (TileDirection direction) {
+
 		if (currentTile == null) {
-			Debug.Log ("No information on current tile the character is standing on!");
+			Debug.Log ("No information on current tile that the character is standing on!");
 			return;
 		}
 
 		if (currentTile.IsTileValidAt (direction)) {
 			FloorTile targetTile = currentTile.GetTileAt (direction);
 			ShiftTo (targetTile);
+
+			if(direction == TileDirection.Up)
+			{
+				targetDir = Quaternion.Euler(Vector3.zero);
+			}
+			else if(direction == TileDirection.Down)
+			{
+				targetDir = Quaternion.Euler(Vector3.up * 180.0f);
+			}
+			else if(direction == TileDirection.Right)
+			{
+				targetDir = Quaternion.Euler(Vector3.up * 90.0f);
+			}
+			else if(direction == TileDirection.Left)
+			{
+				targetDir = Quaternion.Euler(Vector3.down * 90.0f);
+			}
+			transform.rotation = targetDir;
+			transform.LookAt(Target);
+			playerAnim.SetTrigger("isJumpAnim");
 		}
 	}
 	
 	public void ShiftTo (FloorTile tile) {
-		// TODO animation
-		transform.position = tile.GetTilePosition ();
-		tile.OnLandingBy (transform);
+		prevPos = transform.position;
+		prevTile = currentTile;
+		Target = new Vector3(tile.GetTilePosition ().x, transform.position.y, tile.GetTilePosition ().z);
 		currentTile = tile;
+
+		tile.OnLandingBy (transform);
+	}
+
+	public void ReverseShift () {
+		if (prevTile != null) {
+			Target = new Vector3 (prevTile.GetTilePosition ().x, transform.position.y, prevTile.GetTilePosition ().z);
+			currentTile = prevTile;
+		}
+	}
+
+	public void JumpEvent()
+	{
+		canMove = true;
 	}
 }

@@ -67,15 +67,18 @@ public class FloorTileManager : MonoBehaviour {
 
 	public void GenerateNextPart () {
 		if (toggleFloor) {
-			GenerateCorridorForward (lastMiddleGenerated == null ? lastTileGenerated : lastMiddleGenerated);
+			GenerateCorridorForward (lastTileGenerated);
 		} else {
-			GenerateHallForward (lastMiddleGenerated == null ? lastTileGenerated : lastMiddleGenerated);
+			int occurances = Random.Range (1, 3);
+			for (int i = 0; i < occurances; i++) {
+				GenerateHallForward (lastMiddleGenerated == null ? lastTileGenerated : lastMiddleGenerated, i == (occurances - 1));
+			}
 		}
 
 		toggleFloor = !toggleFloor;
 	}
 
-	void GenerateHallForward (FloorTile refTile) {
+	void GenerateHallForward (FloorTile refTile, bool hasExitTrigger = true) {
 		FloorTile anchor = refTile;
 
 		TilesPattern randomPattern = hallPatterns[Random.Range(0, hallPatterns.Count)];
@@ -106,8 +109,8 @@ public class FloorTileManager : MonoBehaviour {
 
 		FloorTile exit = GetEmptyHallEndTile ();
 		if (exit != null) {
-			exit.isCheckpoint = true;
-			lastMiddleGenerated = exit;
+			exit.isCheckpoint = hasExitTrigger;
+			lastTileGenerated = exit;
 		} else {
 			Debug.Log ("No empty tiles to exit hall into corridor!");
 		}
@@ -207,6 +210,7 @@ public class FloorTileManager : MonoBehaviour {
 		FloorTile tile = newTile.GetComponent<FloorTile> ();
 		tile.manager = this;
 		tile.isSpecial = isSpecialTile;
+		tile.Setup ();
 		lastTileGenerated = tile;
 	}
 }
