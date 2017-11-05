@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameController : Singleton<GameController> {
 
@@ -23,10 +24,6 @@ public class GameController : Singleton<GameController> {
 	}
 	
 	void Update () {
-		if (isPlaying && isGameOver) {
-			GameIsOver ();
-		}
-
 		if (player != null) {
 			hiddenScore = Mathf.Max (hiddenScore, player.transform.position.z);
 		}
@@ -43,7 +40,6 @@ public class GameController : Singleton<GameController> {
 	
 	public void GameIsOver () {
 		isPlaying = false;
-
-		// display anything we need
+		SceneManager.LoadScene ("MainMenu");
 	}
 }

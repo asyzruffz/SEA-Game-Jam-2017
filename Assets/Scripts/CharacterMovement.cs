@@ -202,6 +202,7 @@ public class CharacterMovement : MonoBehaviour {
 		if (GameController.Instance) {
 			GameController.Instance.isGameOver = true;
 			GameController.Instance.isPlaying = false;
+			GameController.Instance.GameIsOver ();
 		}
 
 		GetComponent<InstantSpawner> ().Spawn ();
