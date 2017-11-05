@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CharacterMovement : MonoBehaviour {
 
@@ -25,6 +26,7 @@ public class CharacterMovement : MonoBehaviour {
 		
 		playerAnim = GetComponentInChildren<Animator>();
 		yOffset = transform.position.y;
+		DOTween.Init (false, true, LogBehaviour.ErrorsOnly);
 
 		//Check if we are running on iOS, Android, Windows Phone 8 or Unity iPhone
 #if UNITY_IOS || UNITY_ANDROID || UNITY_WP8 || UNITY_IPHONE
@@ -62,6 +64,10 @@ public class CharacterMovement : MonoBehaviour {
 			{
 				canRot = false;
 			}
+		}
+
+		if (CheckLife()) {
+			Die ();
 		}
 	}
 
@@ -176,10 +182,11 @@ public class CharacterMovement : MonoBehaviour {
 		bool death = false;
 
 		if (GameController.Instance) {
-			if (GameController.Instance.isPlaying && currentTile != null) {
+			if (GameController.Instance.isPlaying && currentTile == null) {
 				death = true;
 				GameController.Instance.isGameOver = true;
 				GameController.Instance.isPlaying = false;
+				Fall ();
 			}
 		}
 
@@ -188,6 +195,12 @@ public class CharacterMovement : MonoBehaviour {
 
 	public void Die () {
 		SetMovementEnabled (false);
-
+		// stop everything
+		// destroy gameobj
+	}
+	
+	public void Fall () {
+		SetMovementEnabled (false);
+		transform.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ().SetDelay (0.5f);
 	}
 }

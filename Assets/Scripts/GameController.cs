@@ -20,12 +20,20 @@ public class GameController : Singleton<GameController> {
 	}
 	
 	void Update () {
-		
+		if (isPlaying && isGameOver) {
+			GameIsOver ();
+		}
 	}
 
 	public void StartGame () {
 		isPlaying = true;
+		isGameOver = false;
 		floor.startTile.OnDestroyed ();
 	}
 	
+	public void GameIsOver () {
+		isPlaying = false;
+
+		// display anything we need
+	}
 }
