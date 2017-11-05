@@ -21,6 +21,7 @@ public class InstadeathTile : FloorTile {
 	}
 
 	void FallDownWith (Transform player) {
+		SoundManager.instance.PlaySFX ("SFX Floors Disappear");
 		player.GetComponent<CharacterMovement> ().Fall ();
 		if (!isFallen) {
 			TileFall ();

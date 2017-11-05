@@ -14,6 +14,7 @@ public class CharacterMovement : MonoBehaviour {
 	private float _distanceToTarget;
 	bool canRot = false;
 	bool canMove = false;
+	bool isDead = false;
 
 	TouchGesture touch;
 	Animator playerAnim;
@@ -69,8 +70,9 @@ public class CharacterMovement : MonoBehaviour {
 			}
 		}
 
-		if (CheckLife()) {
-			Die ();
+		if (CheckLife() && !isDead) {
+			isDead = true;
+			Fall ();
 		}
 	}
 
@@ -161,7 +163,7 @@ public class CharacterMovement : MonoBehaviour {
 		prevTile = currentTile;
 		Target = new Vector3(tile.GetTilePosition ().x, transform.position.y, tile.GetTilePosition ().z);
 		currentTile = tile;
-
+		SoundManager.instance.PlaySFX ("SFX Player Jump");
 		tile.OnLandingBy (transform);
 	}
 
@@ -182,30 +184,36 @@ public class CharacterMovement : MonoBehaviour {
 	}
 
 	bool CheckLife () {
-		bool death = false;
-
 		if (GameController.Instance) {
-			if (GameController.Instance.isPlaying && currentTile == null) {
-				death = true;
-				GameController.Instance.isGameOver = true;
-				GameController.Instance.isPlaying = false;
-				Fall ();
+			if (GameController.Instance.isPlaying) {
+				if (currentTile == null || currentTile.IsGone ()) {
+					return true;
+				}
 			}
 		}
 
-		return death;
+		return false;
 	}
 
 	public void Die () {
 		SetMovementEnabled (false);
 		currentTile = null;
-		// stop everything
-		// destroy gameobj
+
+		if (GameController.Instance) {
+			GameController.Instance.isGameOver = true;
+			GameController.Instance.isPlaying = false;
+			GameController.Instance.GameIsOver ();
+		}
+
+		GetComponent<InstantSpawner> ().Spawn ();
+		Destroy (gameObject);
 	}
 	
 	public void Fall () {
 		SetMovementEnabled (false);
 		transform.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ().SetDelay (0.5f);
+		SoundManager.instance.PlaySFX ("SFX Player Dies");
+		Debug.Log ("SFX Player Dies");
 		Invoke ("Die", 1.5f);
 	}
 }

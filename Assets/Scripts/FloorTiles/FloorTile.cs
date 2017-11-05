@@ -22,6 +22,7 @@ public class FloorTile : MonoBehaviour {
 	Vector3 oriPos;
 	bool onceGenerated;
 	bool startedLife;
+	bool isGone;
 
 	protected virtual void Update () {
 		if (GameController.Instance != null) {
@@ -96,6 +97,11 @@ public class FloorTile : MonoBehaviour {
 	public void TileFall () {
 		transform.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ().SetDelay (0.5f);
 		transform.DOShakePosition (1, 0.2f).SetRelative ().SetDelay (0.8f);
+		isGone = true;
+	}
+
+	public bool IsGone() {
+		return isGone;
 	}
 }
 

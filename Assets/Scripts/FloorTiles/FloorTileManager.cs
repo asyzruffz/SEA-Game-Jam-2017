@@ -13,7 +13,7 @@ public class FloorTileManager : MonoBehaviour {
 	public float generateDelay = 1;
 	public bool initFirstTile;
 	public float offsetDistance = 1;
-	public int corridorLength = 10;
+	public int corridorLength = 5;
 
 	[Header ("Spawnables")]
 	public GameObject prefabNormalTile;
@@ -28,7 +28,6 @@ public class FloorTileManager : MonoBehaviour {
 	bool toggleFloor;
 
 	void Start () {
-		SoundManager.instance.PlayBGM("BGM Gameplay");
 		if (startTile != null) {
 			lastTileGenerated = startTile;
 		} else if (initFirstTile) {
@@ -80,6 +79,7 @@ public class FloorTileManager : MonoBehaviour {
 			baseDecay -= (occurances * 3 * rowDecay);
 		}
 
+		SoundManager.instance.PlaySFX ("SFX Floors Generates");
 		toggleFloor = !toggleFloor;
 	}
 
@@ -90,12 +90,12 @@ public class FloorTileManager : MonoBehaviour {
 
 		for (int i = 0; i < randomPattern.pattern.Count; i++) {
 			GenerateRelativeToTileAt (anchor, TileDirection.Up, randomPattern.pattern[i].col2);
-			lastTileGenerated.lifetime = baseDecay + (i * rowDecay);
+			lastTileGenerated.lifetime = baseDecay + (i * rowDecay) + Random.Range(-0.2f, 0.2f);
 			lastTileGenerated.Setup ();
 			anchor = lastTileGenerated;
 
 			GenerateRelativeToTileAt (anchor, TileDirection.Left, randomPattern.pattern[i].col1);
-			lastTileGenerated.lifetime = baseDecay + (i * rowDecay);
+			lastTileGenerated.lifetime = baseDecay + (i * rowDecay) + Random.Range (-0.2f, 0.2f);
 			if (lastLeftGenerated != null) {
 				lastLeftGenerated.upTile = lastTileGenerated;
 			}
@@ -104,7 +104,7 @@ public class FloorTileManager : MonoBehaviour {
 			lastLeftGenerated = lastTileGenerated;
 
 			GenerateRelativeToTileAt (anchor, TileDirection.Right, randomPattern.pattern[i].col3);
-			lastTileGenerated.lifetime = baseDecay + (i * rowDecay);
+			lastTileGenerated.lifetime = baseDecay + (i * rowDecay) + Random.Range (-0.2f, 0.2f);
 			if (lastRightGenerated != null) {
 				lastRightGenerated.upTile = lastTileGenerated;
 			}
