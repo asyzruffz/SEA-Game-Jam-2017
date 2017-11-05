@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class GameController : Singleton<GameController> {
@@ -16,6 +17,7 @@ public class GameController : Singleton<GameController> {
 	[Header("Reference")]
 	public CharacterMovement player;
 	public FloorTileManager floor;
+	public Text scoreText;
 
 	float hiddenScore;
 
@@ -28,6 +30,7 @@ public class GameController : Singleton<GameController> {
 			hiddenScore = Mathf.Max (hiddenScore, player.transform.position.z);
 		}
 		score = (int)(hiddenScore * 10);
+		scoreText.text = score.ToString ();
 	}
 
 	public void StartGame () {
@@ -40,6 +43,10 @@ public class GameController : Singleton<GameController> {
 	
 	public void GameIsOver () {
 		isPlaying = false;
+		Invoke ("BackToMenu", 4f);
+	}
+
+	void BackToMenu () {
 		SceneManager.LoadScene ("MainMenu");
 	}
 }
