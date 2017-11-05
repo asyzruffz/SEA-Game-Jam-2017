@@ -5,22 +5,21 @@ using DG.Tweening;
 
 public class CharacterMovement : MonoBehaviour {
 
-	public Vector3 Target;
-	Vector3 prevPos;
-
-	Quaternion targetDir = Quaternion.Euler(Vector3.zero);
-	bool canRot = false;
 	public float rotateSpeed = 1.0f;
 	public float defaultSpeed = 0.5f;
-	private float _distanceToTarget;
-	bool canMove = false;
-
+	public Vector3 Target;
 	public FloorTile currentTile;
+
+	Quaternion targetDir = Quaternion.Euler(Vector3.zero);
+	private float _distanceToTarget;
+	bool canRot = false;
+	bool canMove = false;
 
 	TouchGesture touch;
 	Animator playerAnim;
 	FloorTile prevTile;
 	float yOffset;
+	//Vector3 prevPos;
 
 	void Start () {
 		
@@ -158,7 +157,7 @@ public class CharacterMovement : MonoBehaviour {
 	}
 	
 	public void ShiftTo (FloorTile tile) {
-		prevPos = transform.position;
+		//prevPos = transform.position;
 		prevTile = currentTile;
 		Target = new Vector3(tile.GetTilePosition ().x, transform.position.y, tile.GetTilePosition ().z);
 		currentTile = tile;
