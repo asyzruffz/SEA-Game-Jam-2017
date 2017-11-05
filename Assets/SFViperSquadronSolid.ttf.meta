@@ -1,0 +1,22 @@
+fileFormatVersion: 2
+guid: 9bc4605681a4a3d4e91ce6c47b1d55b0
+timeCreated: 1509865945
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: SF Viper Squadron Solid
+  fontNames:
+  - SF Viper Squadron Solid
+  fallbackFontReferences:
+  - {fileID: 12800000, guid: 51f3d2d68e15858438a11360dde8e403, type: 3}
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
