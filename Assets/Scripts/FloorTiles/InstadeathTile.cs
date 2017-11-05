@@ -25,6 +25,7 @@ public class InstadeathTile : FloorTile {
 		player.GetComponent<CharacterMovement> ().Fall ();
 		if (!isFallen) {
 			transform.DOMove (new Vector3 (0, -3, 0), 2).SetRelative ().SetDelay (0.5f);
+			transform.DOShakePosition (1, 0.2f).SetRelative ().SetDelay (0.8f);
 			isFallen = true;
 		}
 	}
