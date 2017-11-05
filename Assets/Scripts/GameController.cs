@@ -10,10 +10,13 @@ public class GameController : Singleton<GameController> {
 
 	public bool isPlaying;
 	public bool isGameOver;
+	public int score;
 
 	[Header("Reference")]
 	public CharacterMovement player;
 	public FloorTileManager floor;
+
+	float hiddenScore;
 
 	void Start () {
 		SoundManager.instance.PlayBGM ("BGM Gameplay");
@@ -23,11 +26,18 @@ public class GameController : Singleton<GameController> {
 		if (isPlaying && isGameOver) {
 			GameIsOver ();
 		}
+
+		if (player != null) {
+			hiddenScore = Mathf.Max (hiddenScore, player.transform.position.z);
+		}
+		score = (int)(hiddenScore * 10);
 	}
 
 	public void StartGame () {
 		isPlaying = true;
 		isGameOver = false;
+		score = 0;
+		hiddenScore = 0;
 		floor.startTile.OnDestroyed ();
 	}
 	

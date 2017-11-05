@@ -203,8 +203,9 @@ public class CharacterMovement : MonoBehaviour {
 			GameController.Instance.isGameOver = true;
 			GameController.Instance.isPlaying = false;
 		}
-		// stop everything
-		// destroy gameobj
+
+		GetComponent<InstantSpawner> ().Spawn ();
+		Destroy (gameObject);
 	}
 	
 	public void Fall () {
